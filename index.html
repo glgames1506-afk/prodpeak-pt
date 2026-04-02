@@ -67,13 +67,53 @@
             <div class="hero__stat-value">200+</div>
             <div class="hero__stat-label">Artigos Premium</div>
           </div>
-          <div class="hero__stat">
-            <div class="hero__stat-value">4.9★</div>
-            <div class="hero__stat-label">Nota dos Leitores</div>
-          </div>
-        </div>
-      </div>
-    </div>
+          <section id="artigos" class="articles-grid">
+            <!-- OS ARTIGOS APARECERÃO AQUI AUTOMATICAMENTE -->
+            <div id="loading" class="glass-card">Carregando novos artigos...</div>
+        </section>
+    </main>
+
+    <script>
+        async function loadArticles() {
+            const container = document.getElementById('artigos');
+            const loading = document.getElementById('loading');
+            
+            try {
+                // Rota da API do GitHub para ler a pasta /artigos
+                const response = await fetch('https://api.github.com/repos/glgames1506-afk/prodpeak-pt/contents/artigos');
+                const files = await response.json();
+                
+                if (loading) loading.style.display = 'none';
+
+                if (Array.isArray(files)) {
+                    files.reverse().forEach(file => {
+                        if (file.name.endsWith('.html')) {
+                            // Criando o card do artigo dinamicamente
+                            const card = document.createElement('div');
+                            card.className = 'glass-card';
+                            
+                            // Formatando o nome do arquivo para o título
+                            const title = file.name.replace(/-/g, ' ').replace('.html', '');
+                            const formattedTitle = title.charAt(0).toUpperCase() + title.slice(1);
+                            
+                            card.innerHTML = `
+                                <h3>${formattedTitle}</h3>
+                                <p>Saiba mais sobre como otimizar sua produtividade neste guia completo.</p>
+                                <a href="artigos/${file.name}" class="cta-link">Ler Artigo Completo -></a>
+                            `;
+                            container.appendChild(card);
+                        }
+                    });
+                }
+            } catch (error) {
+                console.error('Erro ao carregar artigos:', error);
+                if (loading) loading.innerHTML = "Clique em um artigo para ler.";
+            }
+        }
+        window.onload = loadArticles;
+    </script>
+</body>
+</html>
   </section>
 
   <!-- ════════ FEATURED ARTICLES ════════ -->
