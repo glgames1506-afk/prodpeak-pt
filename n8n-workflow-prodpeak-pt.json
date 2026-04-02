@@ -1,0 +1,162 @@
+{
+  "name": "ProdPeak Content Engine PT-BR v1",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "trigger-manual-pt",
+      "name": "Start",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        200,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "keyword",
+              "name": "Keyword",
+              "value": "como acabar com a procrastinação no trabalho remoto",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "keyword-input-pt",
+      "name": "Input Keyword",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        400,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-1.5-flash:generateContent",
+        "prompt": "=Escreva um artigo de blog completo e otimizado para SEO em Português (Brasil).\nPalavra-chave: {{ $json.Keyword }}\nTom de voz: Profissional, Pragmático, Focado em Alta Performance e Biohacking.\n\nInstruções:\n1. Título SEO chamativo (máx 60 caracteres).\n2. Meta de descrição persuasiva (máx 160 caracteres).\n3. Título H1 limpo para o artigo.\n4. Corpo do artigo em HTML (use H2, H3, P, B e UL. NÃO use H1 no corpo. Mínimo de 800 palavras).\n5. Slug amigável (URL).\n6. Tempo estimado de leitura.\n7. Categoria do artigo (ex: Foco, Carreira, Saúde Mental).\n\nRetorne o resultado APENAS como um JSON válido com as chaves: title, meta_desc, h1_title, body_html, slug, read_time, category, meta_keywords.",
+        "options": {
+          "temperature": 0.8
+        }
+      },
+      "id": "ai-gemini-pt",
+      "name": "IA - Português",
+      "type": "n8n-nodes-base.googleGemini",
+      "typeVersion": 1,
+      "position": [
+        600,
+        240
+      ],
+      "credentials": {
+        "googleGeminiApi": {
+          "id": "SUA_API_KEY_AQUI"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fileContent": "=c:\\Users\\User\\.antigravity\\productivity-blog-pt\\template-n8n-pt.html",
+        "options": {}
+      },
+      "id": "read-template-pt",
+      "name": "Ler Template PT",
+      "type": "n8n-nodes-base.readBinaryFile",
+      "typeVersion": 1,
+      "position": [
+        800,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const aiData = $node[\"IA - Português\"].json;\nconst templateBinary = $node[\"Ler Template PT\"].binary.data;\nconst templateContent = Buffer.from(templateBinary, 'base64').toString('utf8');\n\nconst hoje = new Date().toLocaleDateString('pt-BR', {\n  year: 'numeric', month: 'long', day: 'numeric'\n});\n\nlet finalHtml = templateContent\n  .replace(/{{META_TITLE}}/g, aiData.title)\n  .replace(/{{META_DESCRIPTION}}/g, aiData.meta_desc)\n  .replace(/{{META_KEYWORDS}}/g, aiData.meta_keywords || \"produtividade, foco, disciplina\")\n  .replace(/{{ARTICLE_TITLE_HTML}}/g, aiData.h1_title)\n  .replace(/{{ARTICLE_HTML_CONTENT}}/g, aiData.body_html)\n  .replace(/{{READ_TIME}}/g, aiData.read_time)\n  .replace(/{{PUBLISH_DATE}}/g, hoje)\n  .replace(/{{AUTHOR_NAME}}/g, \"Equipe ProdPeak\")\n  .replace(/{{ARTICLE_CATEGORY}}/g, aiData.category)\n  .replace(/{{SLUG}}/g, aiData.slug)\n  .replace(/{{HERO_IMAGE_PATH}}/g, \"images/article-focus.png\");\n\nreturn {\n  html: finalHtml,\n  filename: `${aiData.slug}.html`\n};"
+      },
+      "id": "inject-logic-pt",
+      "name": "Injetar Conteúdo",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1000,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "fileName": "=c:\\Users\\User\\.antigravity\\productivity-blog-pt\\artigos\\{{ $json.filename }}",
+        "dataPropertyName": "html",
+        "options": {
+          "append": false
+        }
+      },
+      "id": "write-file-pt",
+      "name": "Salvar Post PT",
+      "type": "n8n-nodes-base.writeBinaryFile",
+      "typeVersion": 1,
+      "position": [
+        1200,
+        240
+      ]
+    }
+  ],
+  "connections": {
+    "Start": {
+      "main": [
+        [
+          {
+            "node": "keyword-input-pt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Input Keyword": {
+      "main": [
+        [
+          {
+            "node": "ai-gemini-pt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IA - Português": {
+      "main": [
+        [
+          {
+            "node": "read-template-pt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ler Template PT": {
+      "main": [
+        [
+          {
+            "node": "inject-logic-pt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Injetar Conteúdo": {
+      "main": [
+        [
+          {
+            "node": "write-file-pt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}

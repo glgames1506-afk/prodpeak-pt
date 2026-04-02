@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Produtos — ProdPeak | Livros e Ferramentas de Produtividade</title>
+  <meta name="description" content="Eleve sua produtividade com nossas recomendações premium. Livros testados e aprovados para transformar sua rotina.">
+  <link rel="canonical" href="https://prodpeak.com/products">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- ════════ NAVBAR ════════ -->
+  <nav class="navbar" id="navbar">
+    <div class="container">
+      <a href="index.html" class="navbar__logo" aria-label="ProdPeak Home">
+        <span class="navbar__logo-icon">⚡</span>
+        ProdPeak
+      </a>
+      <div class="navbar__links" id="navLinks">
+        <a href="index.html" class="navbar__link">Home</a>
+        <a href="article.html" class="navbar__link">Artigos</a>
+        <a href="products.html" class="navbar__link navbar__link--active">Recomendações</a>
+        <a href="index.html#newsletter" class="navbar__link">Newsletter</a>
+        <a href="https://amzn.to/4moudI5" target="_blank" class="btn btn--primary navbar__cta">Comece por Aqui</a>
+      </div>
+      <button class="navbar__toggle" id="navToggle" aria-label="Toggle navigation">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ════════ PRODUCT HERO ════════ -->
+  <section class="product-hero">
+    <div class="hero__orb hero__orb--1"></div>
+    <div class="hero__orb hero__orb--2"></div>
+
+    <div class="container">
+      <div class="product-hero__grid">
+        <div>
+          <div class="hero__badge" style="margin-bottom:20px;">
+            <span class="pulse"></span>
+            ★ Combo Bestseller Mundial
+          </div>
+
+          <span class="section-label">A Base de Tudo</span>
+          <h1 class="section-title" style="font-size:clamp(2.4rem,5vw,3.5rem); margin-bottom:20px;">
+            Kit Especial:<br><span class="text-gradient">Mindset + Hábitos</span>
+          </h1>
+          <p style="color:var(--text-secondary); font-size:1.1rem; line-height:1.8; margin-bottom:28px; max-width:500px;">
+            A combinação perfeita para transformar sua vida. Destrave sua mentalidade com Carol Dweck e construa sistemas invencíveis com James Clear. A fundação de qualquer profissional de alta performance.
+          </p>
+
+          <div style="display:flex; gap:12px; flex-wrap:wrap; margin-bottom:32px;">
+            <a href="https://amzn.to/4moudI5" target="_blank" class="btn btn--primary btn--lg" id="cta-buy-ebook">Ver Preço na Amazon</a>
+            <a href="#more" class="btn btn--secondary btn--lg">Ver Mais Livros</a>
+          </div>
+
+          <div style="display:flex; gap:24px; font-size:0.85rem; color:var(--text-muted);">
+            <span>📦 Entrega Prime</span>
+            <span>⭐ 50.000+ Avaliações</span>
+            <span>📚 Combo 2 Livros</span>
+          </div>
+        </div>
+
+        <div class="product-hero__img">
+          <a href="https://amzn.to/4moudI5" target="_blank">
+            <img src="images/capa-habitos.jpg" onerror="this.src='images/ebook-cover.png'" alt="Kit Mindset e Hábitos Atômicos" style="border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════ MORE PRODUCTS ════════ -->
+  <section class="section" id="more" style="background: var(--bg-secondary);">
+    <div class="container">
+      <div class="reveal" style="text-align:center;">
+        <span class="section-label">Nossa Curadoria</span>
+        <h2 class="section-title">O Arsenal da <span class="text-gradient">Produtividade</span></h2>
+        <p class="section-subtitle" style="margin:0 auto;">Você não precisa de 100 livros. Apenas destes clássicos para dominar seu tempo e foco.</p>
+      </div>
+
+      <div class="products-grid" style="margin-top: 48px;">
+        <!-- Product 1 -->
+        <div class="product-card reveal reveal--delay-1">
+          <div class="product-card__img">
+            <a href="https://amzn.to/4v4vnMF" target="_blank">
+              <img src="images/capa-focado.jpg" onerror="this.src='images/article-focus.png'" alt="Trabalho Focado" loading="lazy" style="border-radius: 8px;">
+            </a>
+            <span class="product-card__tag">Foco</span>
+          </div>
+          <div class="product-card__body">
+            <h3 class="product-card__title">Trabalho Focado (Deep Work)</h3>
+            <p class="product-card__desc">Aprenda a eliminar distrações e realizar o trabalho que realmente importa de forma rápida e profunda.</p>
+            <div class="product-card__footer">
+               <span class="product-card__price"><span class="text-gradient">Cal Newport</span></span>
+              <a href="https://amzn.to/4v4vnMF" target="_blank" class="btn btn--primary">Comprar</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Product 2 -->
+        <div class="product-card reveal reveal--delay-2">
+          <div class="product-card__img">
+            <a href="https://amzn.to/4s7HHcg" target="_blank">
+              <img src="images/capa-essencialismo.jpg" onerror="this.src='images/article-time.png'" alt="Kit Essencialismo" loading="lazy" style="border-radius: 8px;">
+            </a>
+            <span class="product-card__tag">Gestão</span>
+          </div>
+          <div class="product-card__body">
+            <h3 class="product-card__title">Kit Sem Esforço + Essencialismo</h3>
+            <p class="product-card__desc">Descubra como priorizar o essencial e tornar as tarefas mais difíceis da sua vida muito mais fáceis.</p>
+            <div class="product-card__footer">
+               <span class="product-card__price"><span class="text-gradient">Greg McKeown</span></span>
+              <a href="https://amzn.to/4s7HHcg" target="_blank" class="btn btn--primary">Comprar</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Product 3 -->
+        <div class="product-card reveal reveal--delay-3">
+          <div class="product-card__img">
+            <a href="https://amzn.to/4sbpr1Q" target="_blank">
+              <img src="images/capa-clube.jpg" onerror="this.src='images/course-preview.png'" alt="O Clube das 5 da Manhã" loading="lazy" style="border-radius: 8px;">
+            </a>
+            <span class="product-card__tag">Rotina</span>
+          </div>
+          <div class="product-card__body">
+            <h3 class="product-card__title">O Clube das 5 da Manhã</h3>
+            <p class="product-card__desc">Controle suas manhãs, eleve sua vida. Uma fórmula baseada na biologia para maximizar seu desempenho.</p>
+            <div class="product-card__footer">
+               <span class="product-card__price"><span class="text-gradient">Robin Sharma</span></span>
+              <a href="https://amzn.to/4sbpr1Q" target="_blank" class="btn btn--primary">Comprar</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════ GUARANTEE CTA ════════ -->
+  <section class="section">
+    <div class="container">
+      <div class="newsletter reveal">
+        <div class="newsletter__content">
+          <span class="section-label" style="justify-content:center;">Compra Segura</span>
+          <h2 class="newsletter__title">Entrega Garantida <span class="text-gradient">Amazon Prime</span></h2>
+          <p class="newsletter__text">Adquira os melhores livros com frete rápido e grátis via Amazon Prime. A melhor experiência de leitura.</p>
+          <div style="display:flex; justify-content:center; gap:12px; flex-wrap:wrap;">
+            <a href="https://amzn.to/4moudI5" target="_blank" class="btn btn--primary btn--lg">Começar Pelo Kit Hábitos</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════ FOOTER ════════ -->
+  <footer class="footer" id="footer">
+    <div class="container">
+      <div class="footer__grid">
+        <div>
+          <a href="index.html" class="navbar__logo">
+            <span class="navbar__logo-icon">⚡</span>
+            ProdPeak
+          </a>
+          <p class="footer__brand-desc">Estratégias baseadas em evidências para profissionais que exigem resultados.</p>
+        </div>
+        <div>
+          <h4 class="footer__heading">Conteúdo</h4>
+          <a href="article.html" class="footer__link">Artigos Recentes</a>
+          <a href="index.html#newsletter" class="footer__link">Newsletter</a>
+        </div>
+        <div>
+          <h4 class="footer__heading">Recomendações</h4>
+          <a href="products.html" class="footer__link">Livros Parceiros</a>
+          <a href="index.html#tools" class="footer__link">Ferramentas de Produtividade</a>
+        </div>
+        <div>
+          <h4 class="footer__heading">Transparência</h4>
+          <p class="footer__link" style="font-size:0.8rem; line-height:1.5;">Participamos do Programa de Associados da Amazon. Comprando pelos nossos links, você apoia o blog sem pagar nada a mais por isso.</p>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <span>© 2026 ProdPeak. Todos os direitos reservados.</span>
+      </div>
+    </div>
+  </footer>
+
+  <button class="back-to-top" id="backToTop" aria-label="Voltar ao topo">↑</button>
+  <script src="script.js"></script>
+</body>
+</html>
