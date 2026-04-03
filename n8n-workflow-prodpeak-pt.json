@@ -1,157 +1,148 @@
 {
-  "name": "ProdPeak Content Engine PT-BR v1",
+  "name": "ProdPeak - CONVERSION ELITE (V18.2 FINAL)",
   "nodes": [
     {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours",
+              "hoursInterval": 4
+            }
+          ]
+        }
+      },
+      "id": "trigger-auto",
+      "name": "⏰ Ciclo 4h (Automático)",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.1,
+      "position": [0, 400]
+    },
+    {
       "parameters": {},
-      "id": "trigger-manual-pt",
-      "name": "Start",
+      "id": "trigger-manual",
+      "name": "Start Manual (Play)",
       "type": "n8n-nodes-base.manualTrigger",
       "typeVersion": 1,
-      "position": [
-        200,
-        240
-      ]
+      "position": [0, 560]
     },
     {
       "parameters": {
-        "assignments": {
-          "assignments": [
+        "jsCode": "const k = ['biohacking performance', 'neurociencia da disciplina', 'habitos de elite CEOs']; return { keyword: k[Math.floor(Math.random() * k.length)] };"
+      },
+      "id": "selector",
+      "name": "🎰 Sorteador Elite",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [200, 480]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://openrouter.ai/api/v1/chat/completions",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
             {
-              "id": "keyword",
-              "name": "Keyword",
-              "value": "como acabar com a procrastinação no trabalho remoto",
-              "type": "string"
+              "name": "Authorization",
+              "value": "Bearer sk-or-v1-INSERIR_TOKEN_OPENROUTER_AQUI"
             }
           ]
         },
-        "options": {}
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={ \"model\": \"openai/gpt-3.5-turbo\", \"messages\": [{ \"role\": \"system\", \"content\": \"Você é um redator elite especializado em produtividade, biohacking e neurociência. Escreva artigos de 2500+ palavras em português do Brasil. Retorne APENAS JSON válido com: title, body_html, slug, category, meta_desc.\" }, { \"role\": \"user\", \"content\": \"Escreva um artigo completo sobre: {{ $json.keyword }}\" }] }"
       },
-      "id": "keyword-input-pt",
-      "name": "Input Keyword",
-      "type": "n8n-nodes-base.set",
-      "typeVersion": 3.4,
-      "position": [
-        400,
-        240
-      ]
+      "id": "ia-redator",
+      "name": "IA - Redator Royal",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [400, 480]
     },
     {
       "parameters": {
-        "modelName": "models/gemini-1.5-flash:generateContent",
-        "prompt": "=Escreva um artigo de blog completo e otimizado para SEO em Português (Brasil).\nPalavra-chave: {{ $json.Keyword }}\nTom de voz: Profissional, Pragmático, Focado em Alta Performance e Biohacking.\n\nInstruções:\n1. Título SEO chamativo (máx 60 caracteres).\n2. Meta de descrição persuasiva (máx 160 caracteres).\n3. Título H1 limpo para o artigo.\n4. Corpo do artigo em HTML (use H2, H3, P, B e UL. NÃO use H1 no corpo. Mínimo de 800 palavras).\n5. Slug amigável (URL).\n6. Tempo estimado de leitura.\n7. Categoria do artigo (ex: Foco, Carreira, Saúde Mental).\n\nRetorne o resultado APENAS como um JSON válido com as chaves: title, meta_desc, h1_title, body_html, slug, read_time, category, meta_keywords.",
-        "options": {
-          "temperature": 0.8
-        }
+        "jsCode": "const r = $node['IA - Redator Royal'].json.choices[0].message.content; const ai = JSON.parse(r.match(/\\{[\\s\\S]*\\}/)[0]); const h = `<html><head><meta charset='UTF-8'><link rel='stylesheet' href='../styles.css'><title>${ai.title}</title></head><body><main class='container'><div class='badge'>⏱️ LEITURA DE 10 MINUTOS</div><h1>${ai.title}</h1><div class='content'>${ai.body_html}</div><div class='cta-box' style='background:#1b4332; padding:50px; border-radius:12px; margin-top:40px; text-align:center;'><h3>📚 Leitura Recomendada</h3><p>Este conteúdo transformou a vida de milhares. Aprofunde-se com os melhores livros do mercado.</p><a href='https://amzn.to/4moudI5' target='_blank' style='display:inline-block; margin-top:16px; padding:16px 32px; background:#e9c46a; color:#1b4332; text-decoration:none; border-radius:8px; font-weight:bold;'>Ver na Amazon →</a></div></main></body></html>`; return { html: h, filename: `${ai.slug}.html` };"
       },
-      "id": "ai-gemini-pt",
-      "name": "IA - Português",
-      "type": "n8n-nodes-base.googleGemini",
-      "typeVersion": 1,
-      "position": [
-        600,
-        240
-      ],
-      "credentials": {
-        "googleGeminiApi": {
-          "id": "SUA_API_KEY_AQUI"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "fileContent": "=c:\\Users\\User\\.antigravity\\productivity-blog-pt\\template-n8n-pt.html",
-        "options": {}
-      },
-      "id": "read-template-pt",
-      "name": "Ler Template PT",
-      "type": "n8n-nodes-base.readBinaryFile",
-      "typeVersion": 1,
-      "position": [
-        800,
-        240
-      ]
-    },
-    {
-      "parameters": {
-        "jsCode": "const aiData = $node[\"IA - Português\"].json;\nconst templateBinary = $node[\"Ler Template PT\"].binary.data;\nconst templateContent = Buffer.from(templateBinary, 'base64').toString('utf8');\n\nconst hoje = new Date().toLocaleDateString('pt-BR', {\n  year: 'numeric', month: 'long', day: 'numeric'\n});\n\nlet finalHtml = templateContent\n  .replace(/{{META_TITLE}}/g, aiData.title)\n  .replace(/{{META_DESCRIPTION}}/g, aiData.meta_desc)\n  .replace(/{{META_KEYWORDS}}/g, aiData.meta_keywords || \"produtividade, foco, disciplina\")\n  .replace(/{{ARTICLE_TITLE_HTML}}/g, aiData.h1_title)\n  .replace(/{{ARTICLE_HTML_CONTENT}}/g, aiData.body_html)\n  .replace(/{{READ_TIME}}/g, aiData.read_time)\n  .replace(/{{PUBLISH_DATE}}/g, hoje)\n  .replace(/{{AUTHOR_NAME}}/g, \"Equipe ProdPeak\")\n  .replace(/{{ARTICLE_CATEGORY}}/g, aiData.category)\n  .replace(/{{SLUG}}/g, aiData.slug)\n  .replace(/{{HERO_IMAGE_PATH}}/g, \"images/article-focus.png\");\n\nreturn {\n  html: finalHtml,\n  filename: `${aiData.slug}.html`\n};"
-      },
-      "id": "inject-logic-pt",
-      "name": "Injetar Conteúdo",
+      "id": "code-html",
+      "name": "Processar HTML Expert",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [
-        1000,
-        240
-      ]
+      "position": [600, 480]
     },
     {
       "parameters": {
-        "fileName": "=c:\\Users\\User\\.antigravity\\productivity-blog-pt\\artigos\\{{ $json.filename }}",
-        "dataPropertyName": "html",
-        "options": {
-          "append": false
-        }
+        "method": "PUT",
+        "url": "=https://api.github.com/repos/glgames1506-afk/prodpeak-pt/contents/artigos/{{ $json.filename }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer ghp_INSERIR_TOKEN_GITHUB_AQUI"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={ \"message\": \"Novo artigo: {{ $json.filename }}\", \"content\": \"{{ Buffer.from($json.html).toString('base64') }}\", \"branch\": \"main\" }"
       },
-      "id": "write-file-pt",
-      "name": "Salvar Post PT",
-      "type": "n8n-nodes-base.writeBinaryFile",
-      "typeVersion": 1,
-      "position": [
-        1200,
-        240
-      ]
+      "id": "github-push",
+      "name": "🚀 PUBLICAR",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [800, 480]
     }
   ],
   "connections": {
-    "Start": {
+    "⏰ Ciclo 4h (Automático)": {
       "main": [
         [
           {
-            "node": "keyword-input-pt",
+            "node": "🎰 Sorteador Elite",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Input Keyword": {
+    "Start Manual (Play)": {
       "main": [
         [
           {
-            "node": "ai-gemini-pt",
+            "node": "🎰 Sorteador Elite",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "IA - Português": {
+    "🎰 Sorteador Elite": {
       "main": [
         [
           {
-            "node": "read-template-pt",
+            "node": "IA - Redator Royal",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Ler Template PT": {
+    "IA - Redator Royal": {
       "main": [
         [
           {
-            "node": "inject-logic-pt",
+            "node": "Processar HTML Expert",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Injetar Conteúdo": {
+    "Processar HTML Expert": {
       "main": [
         [
           {
-            "node": "write-file-pt",
+            "node": "🚀 PUBLICAR",
             "type": "main",
             "index": 0
           }
