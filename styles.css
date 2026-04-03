@@ -686,6 +686,62 @@ ul, ol {
   gap: 10px;
 }
 
+/* ---------- Articles Grid (Dynamic) ---------- */
+.articles-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--gap);
+  margin-top: 48px;
+}
+
+.glass-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  transition: all var(--duration) var(--ease);
+}
+
+.glass-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--border-accent);
+  box-shadow: var(--shadow-hover), var(--shadow-glow);
+}
+
+.glass-card h3 {
+  font-family: var(--font-heading);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+  line-height: 1.3;
+}
+
+.glass-card:hover h3 {
+  color: var(--text-accent);
+}
+
+.glass-card p {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.65;
+  margin-bottom: 18px;
+}
+
+.cta-link {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--accent-primary);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: gap var(--duration) var(--ease);
+}
+
+.cta-link:hover {
+  gap: 12px;
+}
+
 /* ---------- Ad Space ---------- */
 .ad-banner {
   background: var(--bg-glass);
@@ -1562,7 +1618,7 @@ ul, ol {
   }
 }
 
-/* CORREÇÃO DAS CAPAS DE LIVRO */
+/* CORREï¿½ï¿½O DAS CAPAS DE LIVRO */
 .product-card__img {
   aspect-ratio: auto !important;
   background: var(--bg-hover) !important;

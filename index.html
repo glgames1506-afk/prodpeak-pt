@@ -74,6 +74,19 @@
 
   <main>
 
+  <!-- ════════ NOVOS ARTIGOS (AUTOMAÇÃO) ════════ -->
+  <section id="novos-artigos" class="section">
+    <div class="container">
+      <div class="reveal">
+        <span class="section-label">Recém Publicados</span>
+        <h2 class="section-title">Artigos <span class="text-gradient">Novos</span></h2>
+      </div>
+      <div id="novos-grid" class="articles-grid">
+        <div id="loading-novos" class="glass-card">Carregando novos artigos...</div>
+      </div>
+    </div>
+  </section>
+
   <!-- ════════ FEATURED ARTICLES ════════ -->
   <section class="section" id="featured" style="background: var(--bg-secondary);">
     <div class="container">
@@ -254,6 +267,41 @@
 
   <button class="back-to-top" id="backToTop" aria-label="Voltar">↑</button>
 
+  <script>
+    async function loadNovosArtigos() {
+      const container = document.getElementById('novos-grid');
+      const loading = document.getElementById('loading-novos');
+
+      try {
+        const response = await fetch('https://api.github.com/repos/glgames1506-afk/prodpeak-pt/contents/artigos');
+        const files = await response.json();
+
+        if (loading) loading.style.display = 'none';
+
+        if (Array.isArray(files) && files.length > 0) {
+          const recentes = files.reverse().slice(0, 4);
+          recentes.forEach(file => {
+            if (file.name.endsWith('.html')) {
+              const card = document.createElement('div');
+              card.className = 'glass-card';
+              const title = file.name.replace(/-/g, ' ').replace('.html', '');
+              const formattedTitle = title.charAt(0).toUpperCase() + title.slice(1);
+              card.innerHTML = `
+                <h3>${formattedTitle}</h3>
+                <p>Guia completo sobre como otimizar sua produtividade e performance.</p>
+                <a href="artigos/${file.name}" class="cta-link">Ler Artigo Completo →</a>
+              `;
+              container.appendChild(card);
+            }
+          });
+        }
+      } catch (error) {
+        console.error('Erro ao carregar artigos:', error);
+        if (loading) loading.innerHTML = 'Artigos disponíveis no menu.';
+      }
+    }
+    document.addEventListener('DOMContentLoaded', loadNovosArtigos);
+  </script>
   <script src="script.js"></script>
 </body>
 </html>
